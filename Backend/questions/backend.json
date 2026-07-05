@@ -1,0 +1,69 @@
+{
+  "role": "Backend Developer",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is middleware in Express.js?",
+      "answer": "Middleware functions run during the request-response lifecycle. They can read or modify request and response objects, perform authentication, validation, logging, and pass control with next().",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["express", "node"]
+    },
+    {
+      "id": 2,
+      "question": "Explain how JWT authentication works in a REST API.",
+      "answer": "After login, the server signs a token containing claims. The client sends it in the Authorization header. The server verifies the signature and uses the decoded identity to protect routes.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["auth", "jwt"]
+    },
+    {
+      "id": 3,
+      "question": "How would you design error handling for a production Express application?",
+      "answer": "Use async wrappers, typed operational errors, centralized error middleware, validation errors with clear messages, structured logs, and avoid leaking stack traces in production.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["express", "errors"]
+    },
+    {
+      "id": 4,
+      "question": "What are indexes in MongoDB and when can they hurt performance?",
+      "answer": "Indexes speed up reads by supporting efficient lookup and sorting. They can hurt writes and storage usage because MongoDB must maintain them whenever documents change.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["mongodb", "database"]
+    },
+    {
+      "id": 5,
+      "question": "Describe a time you improved the reliability of an API.",
+      "answer": "A strong answer covers the failure mode, observability, fixes such as retries or idempotency, testing, rollout, and measurable reliability improvement.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["reliability", "ownership"]
+    },
+    {
+      "id": 6,
+      "question": "How would you prevent duplicate submissions in an API endpoint?",
+      "answer": "Use idempotency keys, unique database constraints, transactions where available, request deduplication, and clear client retry behavior.",
+      "difficulty": "Advanced",
+      "type": "Technical",
+      "tags": ["api", "idempotency"]
+    },
+    {
+      "id": 7,
+      "question": "What is the difference between authentication and authorization?",
+      "answer": "Authentication verifies who a user is. Authorization decides what that authenticated user is allowed to access or modify.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["security", "auth"]
+    },
+    {
+      "id": 8,
+      "question": "How do you approach schema design in MongoDB?",
+      "answer": "Model around query patterns, decide what to embed versus reference, add indexes for common access paths, enforce validation, and watch document growth limits.",
+      "difficulty": "Advanced",
+      "type": "Technical",
+      "tags": ["mongodb", "architecture"]
+    }
+  ]
+}

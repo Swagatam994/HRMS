@@ -1,0 +1,69 @@
+{
+  "role": "HR Interview",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Tell me about yourself.",
+      "answer": "A strong answer briefly summarizes relevant background, key strengths, recent work, and why the candidate is interested in the role.",
+      "difficulty": "Beginner",
+      "type": "HR",
+      "tags": ["intro", "communication"]
+    },
+    {
+      "id": 2,
+      "question": "Why are you interested in this role?",
+      "answer": "A strong answer connects the candidate's skills and goals to the responsibilities, company direction, and growth opportunities in the role.",
+      "difficulty": "Beginner",
+      "type": "HR",
+      "tags": ["motivation", "fit"]
+    },
+    {
+      "id": 3,
+      "question": "Describe a conflict you had at work and how you resolved it.",
+      "answer": "Use a clear situation, action, and result. Show empathy, communication, accountability, and a constructive outcome.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["conflict", "teamwork"]
+    },
+    {
+      "id": 4,
+      "question": "What is your greatest professional strength?",
+      "answer": "A strong answer names a relevant strength, gives evidence, and explains how it helps in the target role.",
+      "difficulty": "Beginner",
+      "type": "HR",
+      "tags": ["self-awareness", "strengths"]
+    },
+    {
+      "id": 5,
+      "question": "Tell me about a time you failed or made a mistake.",
+      "answer": "A strong answer takes ownership, explains the lesson learned, and shows concrete changes made afterward.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["ownership", "learning"]
+    },
+    {
+      "id": 6,
+      "question": "How do you prioritize when multiple tasks are urgent?",
+      "answer": "A strong answer considers impact, deadlines, stakeholders, dependencies, communication, and renegotiating scope when needed.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["prioritization", "execution"]
+    },
+    {
+      "id": 7,
+      "question": "Where do you see yourself in three years?",
+      "answer": "A strong answer is ambitious but realistic, aligned with the role, and focused on learning, ownership, and contribution.",
+      "difficulty": "Beginner",
+      "type": "HR",
+      "tags": ["career", "motivation"]
+    },
+    {
+      "id": 8,
+      "question": "How do you handle feedback from managers or peers?",
+      "answer": "A strong answer shows openness, active listening, clarifying questions, follow-through, and examples of improvement from feedback.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["feedback", "growth"]
+    }
+  ]
+}

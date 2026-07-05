@@ -1,0 +1,69 @@
+{
+  "role": "Frontend Developer",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the Virtual DOM and why does React use it?",
+      "answer": "The Virtual DOM is an in-memory representation of the UI. React compares the new tree with the previous one, calculates the smallest set of changes, and updates the real DOM efficiently.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["react", "rendering"]
+    },
+    {
+      "id": 2,
+      "question": "Explain the difference between controlled and uncontrolled components in React.",
+      "answer": "Controlled components keep form state in React state and update via props and events. Uncontrolled components keep state in the DOM and are read through refs when needed.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["react", "forms"]
+    },
+    {
+      "id": 3,
+      "question": "How would you improve the performance of a large React list?",
+      "answer": "Use virtualization, stable keys, memoized row components, pagination or infinite loading, avoid unnecessary state updates, and profile rendering bottlenecks before optimizing.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["performance", "react"]
+    },
+    {
+      "id": 4,
+      "question": "Describe how you handle accessibility in a reusable component library.",
+      "answer": "Use semantic HTML, keyboard navigation, focus management, ARIA only when needed, sufficient contrast, visible focus states, screen reader testing, and automated accessibility checks.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["accessibility", "ui"]
+    },
+    {
+      "id": 5,
+      "question": "Tell me about a time you had to balance design fidelity with frontend performance.",
+      "answer": "A strong answer explains the constraints, trade-offs, measurement approach, collaboration with design, and the final performance and UX outcome.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["collaboration", "performance"]
+    },
+    {
+      "id": 6,
+      "question": "What problems does server-side rendering solve, and what trade-offs does it introduce?",
+      "answer": "SSR can improve first contentful paint, SEO, and perceived performance. Trade-offs include server cost, hydration complexity, caching concerns, and harder debugging.",
+      "difficulty": "Advanced",
+      "type": "Technical",
+      "tags": ["ssr", "architecture"]
+    },
+    {
+      "id": 7,
+      "question": "How does React reconciliation use keys?",
+      "answer": "Keys help React identify which list items changed, were added, or removed. Stable keys preserve component identity and prevent unnecessary remounting or state mix-ups.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["react", "reconciliation"]
+    },
+    {
+      "id": 8,
+      "question": "How do you debug a layout that breaks only on mobile devices?",
+      "answer": "Reproduce with device emulation or real devices, inspect computed styles, check viewport units, flexible grid constraints, overflow, touch targets, and responsive breakpoints.",
+      "difficulty": "Beginner",
+      "type": "Mixed",
+      "tags": ["css", "debugging"]
+    }
+  ]
+}

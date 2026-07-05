@@ -1,0 +1,69 @@
+{
+  "role": "JavaScript Developer",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the difference between var, let, and const?",
+      "answer": "var is function-scoped and hoisted, let and const are block-scoped, and const prevents reassignment while still allowing object mutation.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["javascript", "scope"]
+    },
+    {
+      "id": 2,
+      "question": "Explain closures in JavaScript.",
+      "answer": "A closure is created when a function retains access to variables from its lexical scope even after the outer function has returned.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["javascript", "closures"]
+    },
+    {
+      "id": 3,
+      "question": "What is the event loop?",
+      "answer": "The event loop coordinates the call stack, task queues, and microtask queue so asynchronous callbacks can run after the current synchronous work completes.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["javascript", "async"]
+    },
+    {
+      "id": 4,
+      "question": "How do promises differ from async and await?",
+      "answer": "Promises represent eventual completion or failure. async and await are syntax over promises that make asynchronous code read more like synchronous code.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["javascript", "promises"]
+    },
+    {
+      "id": 5,
+      "question": "What causes memory leaks in browser JavaScript?",
+      "answer": "Common causes include lingering event listeners, retained DOM references, unbounded caches, uncleared timers, and closures holding large objects longer than needed.",
+      "difficulty": "Advanced",
+      "type": "Technical",
+      "tags": ["memory", "browser"]
+    },
+    {
+      "id": 6,
+      "question": "Describe a difficult bug you solved in JavaScript.",
+      "answer": "A strong answer explains the symptoms, investigation process, tools used, root cause, fix, and how the candidate prevented recurrence.",
+      "difficulty": "Intermediate",
+      "type": "Behavioral",
+      "tags": ["debugging", "ownership"]
+    },
+    {
+      "id": 7,
+      "question": "What is debouncing and where would you use it?",
+      "answer": "Debouncing delays execution until events stop firing for a specified interval. It is useful for search inputs, resize handlers, and expensive repeated UI events.",
+      "difficulty": "Intermediate",
+      "type": "Technical",
+      "tags": ["performance", "events"]
+    },
+    {
+      "id": 8,
+      "question": "What is the difference between shallow copy and deep copy?",
+      "answer": "A shallow copy duplicates only the top-level structure and shares nested references. A deep copy recursively duplicates nested values so changes do not leak between objects.",
+      "difficulty": "Beginner",
+      "type": "Technical",
+      "tags": ["objects", "data"]
+    }
+  ]
+}
