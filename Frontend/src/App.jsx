@@ -11,6 +11,9 @@ const Home = lazy(() => import('./pages/Home.jsx').then((module) => ({ default: 
 const Login = lazy(() => import('./pages/Login.jsx').then((module) => ({ default: module.Login })));
 const Register = lazy(() => import('./pages/Register.jsx').then((module) => ({ default: module.Register })));
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx').then((module) => ({ default: module.Dashboard })));
+const HRDashboard = lazy(() => import('./pages/HRDashboard.jsx').then((module) => ({ default: module.HRDashboard })));
+const HRInterviews = lazy(() => import('./pages/HRInterviews.jsx').then((module) => ({ default: module.HRInterviews })));
+const HRInterviewDetail = lazy(() => import('./pages/HRInterviewDetail.jsx').then((module) => ({ default: module.HRInterviewDetail })));
 const CreateInterview = lazy(() => import('./pages/CreateInterview.jsx').then((module) => ({ default: module.CreateInterview })));
 const InterviewRoom = lazy(() => import('./pages/InterviewRoom.jsx').then((module) => ({ default: module.InterviewRoom })));
 const InterviewSummary = lazy(() => import('./pages/InterviewSummary.jsx').then((module) => ({ default: module.InterviewSummary })));
@@ -44,7 +47,12 @@ const App = () => (
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/create-interview" element={<CreateInterview />} />
+            <Route path="/candidate/dashboard" element={<Dashboard />} />
+            <Route path="/candidate/history" element={<InterviewHistory />} />
+            <Route path="/hr/dashboard" element={<HRDashboard />} />
+            <Route path="/hr/interviews" element={<HRInterviews />} />
+            <Route path="/hr/interview/:id" element={<HRInterviewDetail />} />
+            <Route path="/create-interview" element={<ProtectedRoute roles={['recruiter']}><CreateInterview /></ProtectedRoute>} />
             <Route path="/interview/:id" element={<InterviewRoom />} />
             <Route path="/summary/:id" element={<InterviewSummary />} />
             <Route path="/history" element={<InterviewHistory />} />

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { answerSchema } from './Answer.js';
 
-const questionSnapshotSchema = new mongoose.Schema(
+export const questionSnapshotSchema = new mongoose.Schema(
   {
     id: { type: String, required: true },
     question: { type: String, required: true },
@@ -13,44 +12,54 @@ const questionSnapshotSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const finalReportSchema = new mongoose.Schema(
+const scoringCriteriaSchema = new mongoose.Schema(
   {
-    overallScore: { type: Number, min: 0, max: 10, default: 0 },
-    summary: { type: String, default: '' },
-    strengths: [{ type: String }],
-    weaknesses: [{ type: String }],
-    recommendedTopics: [{ type: String }],
-    generatedAt: { type: Date }
+    strongHireScore: { type: Number, min: 0, max: 10, default: 8.5 },
+    hireScore: { type: Number, min: 0, max: 10, default: 7 },
+    considerScore: { type: Number, min: 0, max: 10, default: 5.5 },
+    technicalWeight: { type: Number, min: 0, max: 1, default: 0.5 },
+    communicationWeight: { type: Number, min: 0, max: 1, default: 0.25 },
+    problemSolvingWeight: { type: Number, min: 0, max: 1, default: 0.25 }
+  },
+  { _id: false }
+);
+
+const interviewSettingsSchema = new mongoose.Schema(
+  {
+    allowVoice: { type: Boolean, default: true },
+    allowText: { type: Boolean, default: true },
+    showEvaluationToCandidate: { type: Boolean, default: false },
+    autoShortlist: { type: Boolean, default: true }
   },
   { _id: false }
 );
 
 const interviewSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-    role: { type: String, required: true },
+    recruiter: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    recruiterProfile: { type: mongoose.Schema.Types.ObjectId, ref: 'Recruiter' },
+    title: { type: String, trim: true, required: true },
+    role: { type: String, required: true, trim: true, index: true },
     experienceLevel: { type: String, required: true },
     difficulty: { type: String, required: true },
     interviewType: { type: String, required: true },
     numberOfQuestions: { type: Number, min: 1, max: 20, required: true },
     status: {
       type: String,
-      enum: ['scheduled', 'in_progress', 'paused', 'completed'],
-      default: 'in_progress',
+      enum: ['draft', 'open', 'closed', 'completed'],
+      default: 'open',
       index: true
     },
-    questions: [questionSnapshotSchema],
-    answers: [answerSchema],
-    currentQuestionIndex: { type: Number, default: 0 },
-    startedAt: { type: Date, default: Date.now },
-    pausedAt: { type: Date },
-    endedAt: { type: Date },
-    elapsedSeconds: { type: Number, default: 0 },
-    finalReport: { type: finalReportSchema, default: () => ({}) }
+    inviteCode: { type: String, required: true, unique: true, index: true },
+    questionSet: [questionSnapshotSchema],
+    scoringCriteria: { type: scoringCriteriaSchema, default: () => ({}) },
+    settings: { type: interviewSettingsSchema, default: () => ({}) },
+    finalRankingGeneratedAt: { type: Date }
   },
   { timestamps: true }
 );
 
-interviewSchema.index({ user: 1, createdAt: -1 });
+interviewSchema.index({ recruiter: 1, createdAt: -1 });
+interviewSchema.index({ recruiter: 1, role: 1, status: 1 });
 
 export const Interview = mongoose.model('Interview', interviewSchema);

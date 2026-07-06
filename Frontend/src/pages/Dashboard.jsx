@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Award, CalendarClock, ClipboardList, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -7,15 +7,46 @@ import { Button } from '../components/Button.jsx';
 import { MetricCard } from '../components/MetricCard.jsx';
 import { PerformanceChart } from '../components/PerformanceChart.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { interviewApi } from '../services/api.js';
+import { candidateApi, interviewApi } from '../services/api.js';
 import { formatDate, formatScore } from '../utils/formatters.js';
 
 const getError = (error) => error.response?.data?.message || error.message || 'Unable to load dashboard.';
 
 export const Dashboard = () => {
   const { user, stats, refreshProfile } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const inviteCode = new URLSearchParams(location.search).get('code')?.trim();
+
+    if (!inviteCode) return;
+
+    let isActive = true;
+
+    const joinInvite = async () => {
+      try {
+        const response = await candidateApi.join(inviteCode);
+        const sessionId = response.session?.id || response.session?._id;
+
+        if (isActive && sessionId) {
+          navigate(`/interview/${sessionId}`, { replace: true });
+        }
+      } catch (error) {
+        if (isActive) {
+          toast.error(getError(error));
+        }
+      }
+    };
+
+    joinInvite();
+
+    return () => {
+      isActive = false;
+    };
+  }, [location.search, navigate]);
 
   useEffect(() => {
     const load = async () => {

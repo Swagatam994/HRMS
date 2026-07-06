@@ -6,20 +6,21 @@ import { Button } from '../components/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const getError = (error) => error.response?.data?.message || error.message || 'Something went wrong.';
+const homeFor = (role) => (role === 'recruiter' ? '/hr/dashboard' : '/candidate/dashboard');
 
 export const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'candidate', organization: '' });
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
     try {
-      await register(form);
+      const response = await register(form);
       toast.success('Account created');
-      navigate('/dashboard');
+      navigate(homeFor(response.user?.role));
     } catch (error) {
       toast.error(getError(error));
     } finally {
@@ -31,7 +32,7 @@ export const Register = () => {
     <main className="grid min-h-screen place-items-center px-4 py-10">
       <form onSubmit={handleSubmit} className="glass-panel w-full max-w-md p-6">
         <h1 className="text-2xl font-bold text-white">Create Account</h1>
-        <p className="mt-2 text-sm text-slate-400">Start a new interview practice workspace.</p>
+        <p className="mt-2 text-sm text-slate-400">Create a recruiter or candidate workspace.</p>
         <label className="mt-6 block text-sm text-slate-300">
           Name
           <input
@@ -62,6 +63,27 @@ export const Register = () => {
             required
           />
         </label>
+        <label className="mt-4 block text-sm text-slate-300">
+          Account Type
+          <select
+            className="field mt-2"
+            value={form.role}
+            onChange={(event) => setForm({ ...form, role: event.target.value })}
+          >
+            <option value="candidate">Candidate</option>
+            <option value="recruiter">HR / Recruiter</option>
+          </select>
+        </label>
+        {form.role === 'recruiter' ? (
+          <label className="mt-4 block text-sm text-slate-300">
+            Organization
+            <input
+              className="field mt-2"
+              value={form.organization}
+              onChange={(event) => setForm({ ...form, organization: event.target.value })}
+            />
+          </label>
+        ) : null}
         <Button type="submit" icon={UserPlus} loading={submitting} className="mt-6 w-full">
           Register
         </Button>

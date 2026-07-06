@@ -6,6 +6,7 @@ import { Button } from '../components/Button.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const getError = (error) => error.response?.data?.message || error.message || 'Something went wrong.';
+const homeFor = (role) => (role === 'recruiter' ? '/hr/dashboard' : '/candidate/dashboard');
 
 export const Login = () => {
   const { login } = useAuth();
@@ -18,9 +19,9 @@ export const Login = () => {
     event.preventDefault();
     setSubmitting(true);
     try {
-      await login(form);
+      const response = await login(form);
       toast.success('Signed in');
-      navigate(location.state?.from?.pathname || '/dashboard', { replace: true });
+      navigate(location.state?.from?.pathname || homeFor(response.user?.role), { replace: true });
     } catch (error) {
       toast.error(getError(error));
     } finally {
@@ -32,7 +33,7 @@ export const Login = () => {
     <main className="grid min-h-screen place-items-center px-4 py-10">
       <form onSubmit={handleSubmit} className="glass-panel w-full max-w-md p-6">
         <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
-        <p className="mt-2 text-sm text-slate-400">Sign in to continue your practice.</p>
+        <p className="mt-2 text-sm text-slate-400">Sign in to continue your interview workspace.</p>
         <label className="mt-6 block text-sm text-slate-300">
           Email
           <input

@@ -30,8 +30,19 @@ const summarizeInterview = (interview) => ({
   createdAt: interview.createdAt
 });
 
+const makeInviteCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
+
+const createInviteCode = async () => {
+  for (let index = 0; index < 8; index += 1) {
+    const inviteCode = makeInviteCode();
+    const exists = await Interview.exists({ inviteCode });
+    if (!exists) return inviteCode;
+  }
+  throw new AppError('Unable to generate a unique invite code.', 500);
+};
+
 export const startInterview = asyncHandler(async (req, res) => {
-  const { role, experienceLevel, difficulty, numberOfQuestions, interviewType } = req.body;
+  const { title, role, experienceLevel, difficulty, numberOfQuestions, interviewType } = req.body;
   const bank = await getQuestionsByRole(role, {
     difficulty,
     interviewType,
@@ -43,20 +54,32 @@ export const startInterview = asyncHandler(async (req, res) => {
   }
 
   const interview = await Interview.create({
-    user: req.user._id,
+    recruiter: req.user._id,
+    title: title || `${bank.role} Interview`,
     role: bank.role,
     experienceLevel,
     difficulty,
     interviewType,
     numberOfQuestions: bank.questions.length,
-    questions: bank.questions,
-    startedAt: new Date()
+    questionSet: bank.questions,
+    inviteCode: await createInviteCode(),
+    status: 'open'
   });
 
   res.status(201).json({
-    interview: summarizeInterview(interview),
-    questions: interview.questions.map(serializeQuestion),
-    currentQuestion: serializeQuestion(interview.questions[0])
+    interview: {
+      id: String(interview._id),
+      _id: String(interview._id),
+      title: interview.title,
+      role: interview.role,
+      experienceLevel: interview.experienceLevel,
+      difficulty: interview.difficulty,
+      interviewType: interview.interviewType,
+      numberOfQuestions: interview.numberOfQuestions,
+      status: interview.status,
+      inviteCode: interview.inviteCode,
+      createdAt: interview.createdAt
+    }
   });
 });
 

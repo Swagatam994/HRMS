@@ -1,15 +1,8 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { BarChart3, History, LogOut, Moon, PlusCircle, Sun, UserRound } from 'lucide-react';
+import { BarChart3, BriefcaseBusiness, History, LogOut, Moon, Sun, UserRound } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { Button } from '../components/Button.jsx';
-
-const navItems = [
-  { to: '/dashboard', label: 'Dashboard', icon: BarChart3 },
-  { to: '/create-interview', label: 'Create', icon: PlusCircle },
-  { to: '/history', label: 'History', icon: History },
-  { to: '/profile', label: 'Profile', icon: UserRound }
-];
 
 const navClass = ({ isActive }) =>
   `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition ${
@@ -20,6 +13,18 @@ export const AppLayout = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const navItems =
+    user?.role === 'recruiter'
+      ? [
+          { to: '/hr/dashboard', label: 'Dashboard', icon: BarChart3 },
+          { to: '/hr/interviews', label: 'Interviews', icon: BriefcaseBusiness },
+          { to: '/profile', label: 'Profile', icon: UserRound }
+        ]
+      : [
+          { to: '/candidate/dashboard', label: 'Dashboard', icon: BarChart3 },
+          { to: '/candidate/history', label: 'History', icon: History },
+          { to: '/profile', label: 'Profile', icon: UserRound }
+        ];
 
   const handleLogout = () => {
     logout();
@@ -35,7 +40,9 @@ export const AppLayout = () => {
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-white">AI Interviewer</p>
-            <p className="truncate text-xs text-slate-400">{user?.name}</p>
+            <p className="truncate text-xs text-slate-400">
+              {user?.name} · {user?.role === 'recruiter' ? 'Recruiter' : 'Candidate'}
+            </p>
           </div>
         </div>
         <nav className="mt-8 space-y-2">
@@ -61,7 +68,7 @@ export const AppLayout = () => {
       <div className="lg:pl-64">
         <header className="sticky top-0 z-20 border-b border-white/10 bg-ink/78 px-4 py-3 backdrop-blur-xl lg:hidden">
           <div className="flex items-center justify-between gap-3">
-            <NavLink to="/dashboard" className="font-semibold text-white">
+            <NavLink to={user?.role === 'recruiter' ? '/hr/dashboard' : '/candidate/dashboard'} className="font-semibold text-white">
               AI Interviewer
             </NavLink>
             <div className="flex gap-2">
@@ -69,7 +76,7 @@ export const AppLayout = () => {
               <Button variant="ghost" icon={LogOut} onClick={handleLogout} title="Log out" />
             </div>
           </div>
-          <nav className="mt-3 grid grid-cols-4 gap-2">
+          <nav className="mt-3 grid grid-cols-3 gap-2">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} className={navClass}>
                 <item.icon className="h-4 w-4 shrink-0" />

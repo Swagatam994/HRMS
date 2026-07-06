@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { PlayCircle } from 'lucide-react';
 import { Button } from '../components/Button.jsx';
-import { interviewApi } from '../services/api.js';
+import { hrApi } from '../services/api.js';
 import { difficulties, experienceLevels, interviewTypes, roles } from '../utils/constants.js';
 
 const getError = (error) => error.response?.data?.message || error.message || 'Unable to start interview.';
@@ -26,12 +26,13 @@ export const CreateInterview = () => {
     event.preventDefault();
     setSubmitting(true);
     try {
-      const response = await interviewApi.start({
+      const response = await hrApi.createInterview({
         ...form,
+        title: form.title || `${form.role} Hiring Round`,
         numberOfQuestions: Number(form.numberOfQuestions)
       });
-      toast.success('Interview created');
-      navigate(`/interview/${response.interview.id}`, { state: response });
+      toast.success('Interview campaign created');
+      navigate(`/hr/interview/${response.interview.id}`);
     } catch (error) {
       toast.error(getError(error));
     } finally {

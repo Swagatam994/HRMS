@@ -7,7 +7,7 @@ import {
   startInterview,
   submitAnswer
 } from '../controllers/interviewController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { authorizeRoles, protect } from '../middleware/authMiddleware.js';
 import { validateRequest } from '../middleware/validateRequest.js';
 
 const router = Router();
@@ -16,7 +16,9 @@ router.use(protect);
 
 router.post(
   '/start',
+  authorizeRoles('recruiter'),
   [
+    body('title').optional().trim().isLength({ max: 140 }).withMessage('Title is too long.'),
     body('role').trim().notEmpty().withMessage('Role is required.'),
     body('experienceLevel').trim().notEmpty().withMessage('Experience level is required.'),
     body('difficulty').trim().notEmpty().withMessage('Difficulty is required.'),

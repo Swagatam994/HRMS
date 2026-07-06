@@ -22,3 +22,12 @@ export const protect = asyncHandler(async (req, _res, next) => {
   req.user = user;
   next();
 });
+
+export const authorizeRoles = (...roles) =>
+  asyncHandler(async (req, _res, next) => {
+    if (!roles.includes(req.user.role)) {
+      throw new AppError('You do not have permission to access this resource.', 403);
+    }
+
+    next();
+  });

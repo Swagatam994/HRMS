@@ -11,7 +11,7 @@ const getError = (error) => error.response?.data?.message || error.message || 'U
 
 export const Profile = () => {
   const { user, stats, updateProfile, refreshProfile } = useAuth();
-  const [form, setForm] = useState({ name: '', title: '', location: '', bio: '', avatarUrl: '' });
+  const [form, setForm] = useState({ name: '', title: '', organization: '', location: '', bio: '', avatarUrl: '' });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -23,6 +23,7 @@ export const Profile = () => {
       setForm({
         name: user.name || '',
         title: user.title || '',
+        organization: user.organization || '',
         location: user.location || '',
         bio: user.bio || '',
         avatarUrl: user.avatarUrl || ''
@@ -46,7 +47,7 @@ export const Profile = () => {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
       <div>
-        <p className="text-sm text-blue-300">Candidate</p>
+        <p className="text-sm text-blue-300">{user?.role === 'recruiter' ? 'Recruiter' : 'Candidate'}</p>
         <h1 className="mt-1 text-3xl font-bold tracking-normal text-white">Profile</h1>
       </div>
 
@@ -65,6 +66,14 @@ export const Profile = () => {
           <label className="block text-sm text-slate-300">
             Title
             <input className="field mt-2" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} />
+          </label>
+          <label className="block text-sm text-slate-300">
+            Organization
+            <input
+              className="field mt-2"
+              value={form.organization}
+              onChange={(event) => setForm({ ...form, organization: event.target.value })}
+            />
           </label>
           <label className="block text-sm text-slate-300">
             Location

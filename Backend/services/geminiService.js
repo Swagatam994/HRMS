@@ -91,27 +91,31 @@ const normalizeSummary = (data, answers) => ({
   generatedAt: new Date()
 });
 
+const extractTextFromResponse = (response) => {
+  if (typeof response?.text === 'string' && response.text.trim()) {
+    return response.text;
+  }
+
+  if (typeof response?.response?.text === 'function') {
+    const text = response.response.text();
+    if (typeof text === 'string' && text.trim()) return text;
+  }
+
+  const parts = response?.candidates?.[0]?.content?.parts;
+  if (Array.isArray(parts)) {
+    const combined = parts
+      .map((part) => (typeof part?.text === 'string' ? part.text : ''))
+      .filter(Boolean)
+      .join('');
+    if (combined.trim()) return combined;
+  }
+
+  return '';
+};
+
 const generateJson = async ({ input, schema, systemInstruction }) => {
   if (!ai) {
     throw new Error('Gemini client is not configured.');
-  }
-
-  if (ai.interactions?.create) {
-    const interaction = await ai.interactions.create({
-      model: env.geminiModel,
-      input,
-      system_instruction: systemInstruction,
-      response_format: {
-        type: 'text',
-        mime_type: 'application/json',
-        schema
-      },
-      generation_config: {
-        temperature: 0.2,
-        thinking_level: 'low'
-      }
-    });
-    return parseJsonFromText(interaction.output_text);
   }
 
   const response = await ai.models.generateContent({
@@ -125,7 +129,7 @@ const generateJson = async ({ input, schema, systemInstruction }) => {
     }
   });
 
-  return parseJsonFromText(response.text || response.response?.text?.() || '');
+  return parseJsonFromText(extractTextFromResponse(response));
 };
 
 export const evaluateAnswer = async (input) => {

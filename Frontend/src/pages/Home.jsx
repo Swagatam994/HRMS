@@ -27,8 +27,8 @@ export const Home = () => {
             AI Interviewer Agent
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-            Practice one question at a time, answer by voice or typing, and get structured feedback with a final
-            performance report.
+            Run first-round technical interviews with recruiter campaign dashboards, live candidate sessions, and
+            AI-assisted rankings.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button as={Link} to="/register" icon={BrainCircuit}>

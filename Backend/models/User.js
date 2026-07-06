@@ -22,6 +22,13 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
       select: false
     },
+    role: {
+      type: String,
+      enum: ['recruiter', 'candidate'],
+      default: 'candidate',
+      index: true
+    },
+    organization: { type: String, trim: true, default: '' },
     title: { type: String, trim: true, default: 'Interview Candidate' },
     location: { type: String, trim: true, default: '' },
     bio: { type: String, trim: true, default: '' },
@@ -46,6 +53,8 @@ userSchema.methods.toSafeJSON = function toSafeJSON() {
     id: this._id,
     name: this.name,
     email: this.email,
+    role: this.role,
+    organization: this.organization,
     title: this.title,
     location: this.location,
     bio: this.bio,

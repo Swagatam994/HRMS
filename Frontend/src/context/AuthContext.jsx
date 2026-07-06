@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { authApi, userApi } from '../services/api.js';
+import { disconnectSocket } from '../services/socket.js';
 import { storageKeys } from '../utils/constants.js';
 
 const AuthContext = createContext(null);
@@ -38,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       .catch(() => {
         localStorage.removeItem(storageKeys.token);
         localStorage.removeItem(storageKeys.user);
+        disconnectSocket();
         setToken(null);
         setUser(null);
       })
