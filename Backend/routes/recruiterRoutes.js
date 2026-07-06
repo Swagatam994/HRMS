@@ -12,6 +12,8 @@ import {
 } from '../controllers/recruiterController.js';
 import { authorizeRoles, protect } from '../middleware/authMiddleware.js';
 import { validateRequest } from '../middleware/validateRequest.js';
+import { processResumeScreening } from '../controllers/resumeController.js';
+import { upload } from '../middleware/uploadMiddleware.js';
 
 const router = Router();
 
@@ -76,5 +78,7 @@ router.patch(
   validateRequest,
   updateCandidateStatus
 );
+
+router.post('/resume-screen', upload.single('resume'), processResumeScreening);
 
 export default router;

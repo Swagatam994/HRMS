@@ -2,7 +2,7 @@ import axios from 'axios';
 import { storageKeys } from '../utils/constants.js';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5002/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
   timeout: 60000
 });
 
@@ -45,7 +45,10 @@ export const hrApi = {
   getRankings: (id, params) => api.get(`/hr/interviews/${id}/rankings`, { params }).then((res) => res.data),
   getSession: (sessionId) => api.get(`/hr/sessions/${sessionId}`).then((res) => res.data),
   updateCandidateStatus: (rankingId, status) =>
-    api.patch(`/hr/rankings/${rankingId}/status`, { status }).then((res) => res.data)
+    api.patch(`/hr/rankings/${rankingId}/status`, { status }).then((res) => res.data),
+  screenResume: (formData) => api.post('/hr/resume-screen', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }).then((res) => res.data)
 };
 
 export const candidateApi = {
