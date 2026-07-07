@@ -2,12 +2,14 @@ import { CandidateRanking } from '../models/CandidateRanking.js';
 import { Interview } from '../models/Interview.js';
 import { InterviewSession } from '../models/InterviewSession.js';
 import { Recruiter } from '../models/Recruiter.js';
+import { User } from '../models/User.js';
 import { getQuestionsByRole } from '../services/questionService.js';
 import { rerankInterview } from '../services/rankingService.js';
 import { emitToRecruiter } from '../services/socketService.js';
 import { AppError } from '../utils/AppError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { average } from '../utils/reportUtils.js';
+import { createEmployeeFromUser } from './employeeController.js';
 
 const makeInviteCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
 
@@ -268,6 +270,20 @@ export const updateCandidateStatus = asyncHandler(async (req, res) => {
 
   if (!ranking) {
     throw new AppError('Candidate ranking not found.', 404);
+  }
+
+  if (['Hired', 'Hire'].includes(req.body.status)) {
+    const user = await User.findById(ranking.candidate);
+    if (user) {
+      await createEmployeeFromUser({
+        user,
+        role: ranking.roleApplied,
+        department: user.organization || '',
+        joiningDate: req.body.joiningDate,
+        reportingManager: req.body.reportingManager || null,
+        candidateId: null
+      });
+    }
   }
 
   await rerankInterview(ranking.interview);

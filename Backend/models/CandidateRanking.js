@@ -14,14 +14,14 @@ const candidateRankingSchema = new mongoose.Schema(
     overallScore: { type: Number, min: 0, max: 10, default: 0, index: true },
     recommendation: {
       type: String,
-      enum: ['Strong Hire', 'Hire', 'Consider', 'Reject', 'Pending'],
+      enum: ['Strong Hire', 'Hire', 'Consider', 'Reject', 'Pending', 'Hired'],
       default: 'Pending',
       index: true
     },
     rank: { type: Number, default: 0 },
     status: {
       type: String,
-      enum: ['Pending', 'Shortlisted', 'Rejected', 'On Hold'],
+      enum: ['Pending', 'Shortlisted', 'Rejected', 'On Hold', 'Hired'],
       default: 'Pending',
       index: true
     },

@@ -22,6 +22,7 @@ export const AppLayout = () => {
         ]
       : [
           { to: '/candidate/dashboard', label: 'Dashboard', icon: BarChart3 },
+          { to: '/onboarding', label: 'Onboarding', icon: BriefcaseBusiness },
           { to: '/candidate/history', label: 'History', icon: History },
           { to: '/profile', label: 'Profile', icon: UserRound }
         ];
