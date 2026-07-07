@@ -144,19 +144,26 @@ export const joinByCode = asyncHandler(async (req, res) => {
   }
 
   const candidateProfile = await getCandidateProfile(req.user._id);
-  let session = await InterviewSession.findOne({ interview: interview._id, candidate: req.user._id });
 
-  if (!session) {
-    session = await InterviewSession.create({
-      interview: interview._id,
-      recruiter: interview.recruiter,
-      candidate: req.user._id,
-      candidateProfile: candidateProfile._id,
-      questions: interview.questionSet,
-      currentQuestionIndex: 0,
-      status: 'waiting'
-    });
-  }
+  const session = await InterviewSession.findOneAndUpdate(
+    { interview: interview._id, candidate: req.user._id },
+    {
+      $setOnInsert: {
+        interview: interview._id,
+        recruiter: interview.recruiter,
+        candidate: req.user._id,
+        candidateProfile: candidateProfile._id,
+        questions: interview.questionSet,
+        currentQuestionIndex: 0,
+        status: 'waiting'
+      }
+    },
+    {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true
+    }
+  );
 
   emitSessionEvent(session, 'candidate:joined', {
     status: session.status,
