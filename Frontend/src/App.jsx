@@ -19,6 +19,7 @@ const InterviewRoom = lazy(() => import('./pages/InterviewRoom.jsx').then((modul
 const InterviewSummary = lazy(() => import('./pages/InterviewSummary.jsx').then((module) => ({ default: module.InterviewSummary })));
 const InterviewHistory = lazy(() => import('./pages/InterviewHistory.jsx').then((module) => ({ default: module.InterviewHistory })));
 const Profile = lazy(() => import('./pages/Profile.jsx').then((module) => ({ default: module.Profile })));
+const ResumeScreening = lazy(() => import('./pages/ResumeScreening.jsx').then((module) => ({ default: module.ResumeScreening })));
 const NotFound = lazy(() => import('./pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
 
 const App = () => (
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/hr/dashboard" element={<HRDashboard />} />
             <Route path="/hr/interviews" element={<HRInterviews />} />
             <Route path="/hr/interview/:id" element={<HRInterviewDetail />} />
+            <Route path="/hr/resume-screening" element={<ProtectedRoute roles={['recruiter']}><ResumeScreening /></ProtectedRoute>} />
             <Route path="/create-interview" element={<ProtectedRoute roles={['recruiter']}><CreateInterview /></ProtectedRoute>} />
             <Route path="/interview/:id" element={<InterviewRoom />} />
             <Route path="/summary/:id" element={<InterviewSummary />} />

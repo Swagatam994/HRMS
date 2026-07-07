@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { Activity, ClipboardList, Radio, Trophy, UsersRound } from 'lucide-react';
+import { Activity, ClipboardList, Radio, Trophy, UsersRound, FileText } from 'lucide-react';
 import { Button } from '../components/Button.jsx';
 import { MetricCard } from '../components/MetricCard.jsx';
 import { hrApi } from '../services/api.js';
@@ -75,9 +75,14 @@ export const HRDashboard = () => {
           <p className="text-sm text-blue-300">Recruiter Dashboard</p>
           <h1 className="mt-1 text-3xl font-bold tracking-normal text-white">Live Interview Command Center</h1>
         </div>
-        <Button as={Link} to="/hr/interviews" icon={ClipboardList}>
-          Manage Interviews
-        </Button>
+        <div className="flex gap-3">
+          <Button as={Link} to="/hr/resume-screening" icon={FileText} variant="secondary">
+            Screen Resumes
+          </Button>
+          <Button as={Link} to="/hr/interviews" icon={ClipboardList}>
+            Manage Interviews
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
