@@ -51,6 +51,16 @@ export const hrApi = {
   }).then((res) => res.data)
 };
 
+export const dashboardApi = {
+  overview: () => api.get('/dashboard/overview').then((res) => res.data),
+  hiring: () => api.get('/dashboard/hiring').then((res) => res.data),
+  productivity: () => api.get('/dashboard/productivity').then((res) => res.data),
+  payroll: () => api.get('/dashboard/payroll').then((res) => res.data),
+  attendance: () => api.get('/dashboard/attendance').then((res) => res.data),
+  leaves: () => api.get('/dashboard/leaves').then((res) => res.data),
+  workforceReport: () => api.get('/dashboard/workforce-report').then((res) => res.data)
+};
+
 export const candidateApi = {
   dashboard: () => api.get('/candidate/dashboard').then((res) => res.data),
   getInvite: (code) => api.get(`/candidate/invite/${encodeURIComponent(code)}`).then((res) => res.data),

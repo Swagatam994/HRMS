@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { BarChart3, BriefcaseBusiness, History, LogOut, Moon, Sun, UserRound } from 'lucide-react';
+import { BarChart3, BriefcaseBusiness, History, LogOut, Moon, Sun, UserRound, BrainCircuit } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
 import { Button } from '../components/Button.jsx';
@@ -17,6 +17,7 @@ export const AppLayout = () => {
     user?.role === 'recruiter'
       ? [
           { to: '/hr/dashboard', label: 'Dashboard', icon: BarChart3 },
+          { to: '/hr/intelligence', label: 'HR Intelligence', icon: BrainCircuit },
           { to: '/hr/resume-screening', label: 'Screening', icon: BriefcaseBusiness },
           { to: '/hr/interviews', label: 'Interviews', icon: BriefcaseBusiness },
           { to: '/profile', label: 'Profile', icon: UserRound }

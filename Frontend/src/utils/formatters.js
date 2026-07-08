@@ -19,3 +19,8 @@ export const formatDuration = (seconds = 0) => {
     .padStart(2, '0');
   return `${minutes}:${rest}`;
 };
+
+export const formatCurrency = (value) =>
+  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value || 0);
+
+export const formatPercent = (value) => `${Number(value || 0).toFixed(1)}%`;

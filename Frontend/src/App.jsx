@@ -23,6 +23,9 @@ const EmployeeDashboard = lazy(() => import('./pages/onboarding/EmployeeDashboar
 const OnboardingTasks = lazy(() => import('./pages/onboarding/OnboardingTasks.jsx').then((module) => ({ default: module.OnboardingTasks })));
 const DocumentsPage = lazy(() => import('./pages/onboarding/DocumentsPage.jsx').then((module) => ({ default: module.DocumentsPage })));
 const OnboardingChat = lazy(() => import('./pages/onboarding/OnboardingChat.jsx').then((module) => ({ default: module.OnboardingChat })));
+const HRIntelligenceDashboard = lazy(() =>
+  import('./pages/HRIntelligenceDashboard.jsx').then((module) => ({ default: module.HRIntelligenceDashboard }))
+);
 const ResumeScreening = lazy(() => import('./pages/ResumeScreening.jsx').then((module) => ({ default: module.ResumeScreening })));
 const NotFound = lazy(() => import('./pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
 
@@ -59,6 +62,7 @@ const App = () => (
             <Route path="/onboarding/documents" element={<DocumentsPage />} />
             <Route path="/onboarding/chat" element={<OnboardingChat />} />
             <Route path="/hr/dashboard" element={<HRDashboard />} />
+            <Route path="/hr/intelligence" element={<ProtectedRoute roles={['recruiter']}><HRIntelligenceDashboard /></ProtectedRoute>} />
             <Route path="/hr/interviews" element={<HRInterviews />} />
             <Route path="/hr/interview/:id" element={<HRInterviewDetail />} />
             <Route path="/hr/resume-screening" element={<ProtectedRoute roles={['recruiter']}><ResumeScreening /></ProtectedRoute>} />

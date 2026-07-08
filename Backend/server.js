@@ -17,6 +17,7 @@ import employeeRoutes from './routes/employeeRoutes.js';
 import onboardingRoutes from './routes/onboardingRoutes.js';
 import documentRoutes from './routes/documentRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import { setupInterviewSockets } from './socket/interviewSocket.js';
 
@@ -62,6 +63,7 @@ app.use('/api/employee', employeeRoutes);
 app.use('/api/onboarding', onboardingRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
