@@ -19,6 +19,10 @@ const InterviewRoom = lazy(() => import('./pages/InterviewRoom.jsx').then((modul
 const InterviewSummary = lazy(() => import('./pages/InterviewSummary.jsx').then((module) => ({ default: module.InterviewSummary })));
 const InterviewHistory = lazy(() => import('./pages/InterviewHistory.jsx').then((module) => ({ default: module.InterviewHistory })));
 const Profile = lazy(() => import('./pages/Profile.jsx').then((module) => ({ default: module.Profile })));
+const EmployeeDashboard = lazy(() => import('./pages/onboarding/EmployeeDashboard.jsx').then((module) => ({ default: module.EmployeeDashboard })));
+const OnboardingTasks = lazy(() => import('./pages/onboarding/OnboardingTasks.jsx').then((module) => ({ default: module.OnboardingTasks })));
+const DocumentsPage = lazy(() => import('./pages/onboarding/DocumentsPage.jsx').then((module) => ({ default: module.DocumentsPage })));
+const OnboardingChat = lazy(() => import('./pages/onboarding/OnboardingChat.jsx').then((module) => ({ default: module.OnboardingChat })));
 const ResumeScreening = lazy(() => import('./pages/ResumeScreening.jsx').then((module) => ({ default: module.ResumeScreening })));
 const NotFound = lazy(() => import('./pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
 
@@ -50,6 +54,10 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/candidate/dashboard" element={<Dashboard />} />
             <Route path="/candidate/history" element={<InterviewHistory />} />
+            <Route path="/onboarding" element={<EmployeeDashboard />} />
+            <Route path="/onboarding/tasks" element={<OnboardingTasks />} />
+            <Route path="/onboarding/documents" element={<DocumentsPage />} />
+            <Route path="/onboarding/chat" element={<OnboardingChat />} />
             <Route path="/hr/dashboard" element={<HRDashboard />} />
             <Route path="/hr/interviews" element={<HRInterviews />} />
             <Route path="/hr/interview/:id" element={<HRInterviewDetail />} />

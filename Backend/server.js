@@ -13,6 +13,10 @@ import recruiterRoutes from './routes/recruiterRoutes.js';
 import questionRoutes from './routes/questionRoutes.js';
 import interviewRoutes from './routes/interviewRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import employeeRoutes from './routes/employeeRoutes.js';
+import onboardingRoutes from './routes/onboardingRoutes.js';
+import documentRoutes from './routes/documentRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 import { setupInterviewSockets } from './socket/interviewSocket.js';
 
@@ -54,6 +58,10 @@ app.use('/api/candidate', candidateRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/interview', interviewRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/employee', employeeRoutes);
+app.use('/api/onboarding', onboardingRoutes);
+app.use('/api/documents', documentRoutes);
+app.use('/api/chat', chatRoutes);
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
