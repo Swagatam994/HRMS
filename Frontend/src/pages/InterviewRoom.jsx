@@ -9,7 +9,8 @@ import { LoadingScreen } from '../components/LoadingScreen.jsx';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition.js';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis.js';
 import { useTimer } from '../hooks/useTimer.js';
-import { interviewApi } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import { candidateApi, interviewApi } from '../services/api.js';
 import { formatDuration } from '../utils/formatters.js';
 
 const getError = (error) => error.response?.data?.message || error.message || 'Interview action failed.';
@@ -18,6 +19,7 @@ export const InterviewRoom = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const initialState = location.state || {};
   const greetedRef = useRef(false);
 
@@ -49,15 +51,26 @@ export const InterviewRoom = () => {
 
     const loadInterview = async () => {
       try {
-        const response = await interviewApi.getById(id);
-        const fetched = response.interview;
+        const response = user?.role === 'candidate' ? await candidateApi.getSession(id) : await interviewApi.getById(id);
+        const fetched = response.session || response.interview;
+
+        if (!fetched) {
+          throw new Error('Interview not found.');
+        }
+
         if (fetched.status === 'completed') {
-          navigate(`/summary/${id}`, { replace: true, state: response });
+          navigate(`/summary/${id}`, { replace: true, state: { interview: fetched, questions: fetched.questions || [] } });
           return;
         }
-        setInterview({ ...fetched, id: fetched._id });
+
+        setInterview({
+          ...(fetched.interview || {}),
+          ...fetched,
+          id: fetched._id || fetched.id,
+          answeredCount: fetched.answers?.length || 0
+        });
         setQuestions(fetched.questions || []);
-        setCurrentIndex(Math.min(fetched.currentQuestionIndex || fetched.answers?.length || 0, fetched.questions?.length || 0));
+        setCurrentIndex(Math.min(fetched.currentQuestionIndex || fetched.answers?.length || 0, (fetched.questions || []).length));
       } catch (error) {
         toast.error(getError(error));
       } finally {
@@ -66,7 +79,7 @@ export const InterviewRoom = () => {
     };
 
     loadInterview();
-  }, [id, initialState.interview, navigate]);
+  }, [id, initialState.interview, navigate, user?.role]);
 
   useEffect(() => {
     if (mode === 'voice') {
@@ -119,17 +132,31 @@ export const InterviewRoom = () => {
     setSubmitting(true);
     speech.stop();
     try {
-      const response = await interviewApi.submitAnswer({
-        interviewId: id,
-        questionId: currentQuestion.id,
-        transcript,
-        mode,
-        durationSeconds: questionTimer.seconds
-      });
+      const response = user?.role === 'candidate'
+        ? await candidateApi.submitAnswer(id, {
+            transcript,
+            mode,
+            durationSeconds: questionTimer.seconds
+          })
+        : await interviewApi.submitAnswer({
+            interviewId: id,
+            questionId: currentQuestion.id,
+            transcript,
+            mode,
+            durationSeconds: questionTimer.seconds
+          });
 
-      setLastFeedback(response.answer.feedback);
-      setInterview(response.interview);
-      setComplete(response.isComplete);
+      const submitted = response.session || response.interview;
+      setLastFeedback(response.answer?.feedback || null);
+      setInterview({
+        ...(submitted?.interview || {}),
+        ...submitted,
+        id: submitted?._id || submitted?.id,
+        answeredCount: submitted?.answers?.length || 0
+      });
+      setQuestions(submitted?.questions || []);
+      setCurrentIndex(Math.min(submitted?.currentQuestionIndex || submitted?.answers?.length || 0, (submitted?.questions || []).length));
+      setComplete(response.isComplete || false);
       toast.success('Answer evaluated');
     } catch (error) {
       toast.error(getError(error));
@@ -149,8 +176,11 @@ export const InterviewRoom = () => {
   const handleFinish = async () => {
     setSubmitting(true);
     try {
-      const response = await interviewApi.end({ interviewId: id, elapsedSeconds: totalTimer.seconds });
-      navigate(`/summary/${id}`, { replace: true, state: response });
+      const response = user?.role === 'candidate'
+        ? await candidateApi.completeSession(id, { elapsedSeconds: totalTimer.seconds })
+        : await interviewApi.end({ interviewId: id, elapsedSeconds: totalTimer.seconds });
+      const completedInterview = response.session || response.interview;
+      navigate(`/summary/${id}`, { replace: true, state: { interview: completedInterview, questions: completedInterview?.questions || [] } });
     } catch (error) {
       toast.error(getError(error));
     } finally {

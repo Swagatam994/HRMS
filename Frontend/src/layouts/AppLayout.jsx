@@ -17,6 +17,7 @@ export const AppLayout = () => {
     user?.role === 'recruiter'
       ? [
           { to: '/hr/dashboard', label: 'Dashboard', icon: BarChart3 },
+          { to: '/hr/resume-screening', label: 'Screening', icon: BriefcaseBusiness },
           { to: '/hr/interviews', label: 'Interviews', icon: BriefcaseBusiness },
           { to: '/profile', label: 'Profile', icon: UserRound }
         ]

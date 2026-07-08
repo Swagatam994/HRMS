@@ -2,6 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import { env } from '../config/env.js';
 import { buildEvaluationPrompt, evaluationResponseSchema } from '../prompts/evaluationPrompt.js';
 import { buildSummaryPrompt, summaryResponseSchema } from '../prompts/summaryPrompt.js';
+import { buildResumePrompt, resumeResponseSchema } from '../prompts/resumePrompt.js';
 import { parseJsonFromText } from '../utils/parseJson.js';
 import { average, buildReportFromAnswers, clampScore } from '../utils/reportUtils.js';
 
@@ -170,5 +171,38 @@ export const generateInterviewSummary = async (interview) => {
   } catch (error) {
     console.warn('Gemini summary failed. Using local report:', error.message);
     return buildReportFromAnswers(answers);
+  }
+};
+
+export const parseResume = async ({ resumeText, jobDescription }) => {
+  if (!env.geminiApiKey) {
+    return {
+      name: null,
+      email: null,
+      totalYearsOfExperience: null,
+      coreTechnicalSkills: [],
+      highestEducationLevel: null,
+      matches: [],
+      missingKeyRequirements: [],
+      match_score: 0,
+      status: 'Parsing Failed - No API Key'
+    };
+  }
+
+  try {
+    const prompt = buildResumePrompt({ resumeText, jobDescription });
+    const result = await generateJson({
+      input: prompt,
+      schema: resumeResponseSchema,
+      systemInstruction: 'You are the Resume Intelligence & Screening Agent. Return valid JSON only based on the schema.'
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Gemini resume parsing failed:', error.message);
+    return {
+      match_score: 0,
+      status: 'Parsing Failed'
+    };
   }
 };

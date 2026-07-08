@@ -5,7 +5,8 @@ import toast from 'react-hot-toast';
 import { Download, ListChecks, Target, TrendingUp } from 'lucide-react';
 import { Button } from '../components/Button.jsx';
 import { LoadingScreen } from '../components/LoadingScreen.jsx';
-import { interviewApi } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import { candidateApi, interviewApi } from '../services/api.js';
 import { downloadInterviewPdf } from '../utils/pdf.js';
 import { formatDate, formatScore } from '../utils/formatters.js';
 
@@ -30,6 +31,7 @@ const PillList = ({ title, items = [], icon: Icon, color }) => (
 export const InterviewSummary = () => {
   const { id } = useParams();
   const location = useLocation();
+  const { user } = useAuth();
   const [interview, setInterview] = useState(location.state?.interview || null);
   const [loading, setLoading] = useState(!location.state?.interview);
 
@@ -38,8 +40,8 @@ export const InterviewSummary = () => {
 
     const load = async () => {
       try {
-        const response = await interviewApi.getById(id);
-        setInterview(response.interview);
+        const response = user?.role === 'candidate' ? await candidateApi.getSession(id) : await interviewApi.getById(id);
+        setInterview(response.session || response.interview);
       } catch (error) {
         toast.error(getError(error));
       } finally {
@@ -48,7 +50,7 @@ export const InterviewSummary = () => {
     };
 
     load();
-  }, [id, interview]);
+  }, [id, interview, user?.role]);
 
   if (loading) return <LoadingScreen label="Loading final report" />;
   if (!interview) return null;

@@ -45,7 +45,10 @@ export const hrApi = {
   getRankings: (id, params) => api.get(`/hr/interviews/${id}/rankings`, { params }).then((res) => res.data),
   getSession: (sessionId) => api.get(`/hr/sessions/${sessionId}`).then((res) => res.data),
   updateCandidateStatus: (rankingId, status) =>
-    api.patch(`/hr/rankings/${rankingId}/status`, { status }).then((res) => res.data)
+    api.patch(`/hr/rankings/${rankingId}/status`, { status }).then((res) => res.data),
+  screenResume: (formData) => api.post('/hr/resume-screen', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }).then((res) => res.data)
 };
 
 export const candidateApi = {
